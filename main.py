@@ -51,7 +51,42 @@ def main():
 # 5 - function(*args) position args
 # 5 - (loops, if, functions) mixed
 
+# numbers which are divisible by 3 is 'Fizz'
+# numbers which are divisible by 5 is 'Buzz'
+# numbers which are divisible both 3 & 5 is "FizzBuzz"
+def fizz_buzz(num):
+    count = 1
+    while count<=num :
+        if count%3==0 and count%5==0:
+            print("FizzBuzz- ",count)
+        if count%3==0:
+            print("Fizz- ",count)
+        elif count%5==0:
+            print("Buzz- ",count)
+        
+        count+=1
 
+
+#print till 'N'
+# fizz_buzz(20)
+# ==========================================================
+# mypass = "Admin@123"
+# count = 2
+# while True:
+#     user_input = input("Enter pass = ")
+#     if user_input == mypass:
+#         print("Correct Pass")
+#         break
+#     elif count==0:
+#         print("Wrong Pass Max Tryout")
+#         break
+#     else:
+#         print("Wrong pass")
+#     count-=1
+# =======================================================
+# i=5
+# x = f"2 x {i} = {2*i}"
+# print(x)
 
 
 
