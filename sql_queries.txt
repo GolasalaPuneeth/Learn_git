@@ -1,3 +1,6 @@
+#This creates an Employee table to store information about employees 
+#such as their name,department,salary,joining date,performance score,and email address.
+
 create table employee(
 	employee_id SERIAL PRIMARY KEY,
 	first_name VARCHAR(50),
@@ -9,14 +12,16 @@ create table employee(
 	email VARCHAR(50)
 );
 
+#This query is used to insert employee details into the Employee table.
 insert into employee(employee_id,first_name,last_name,salary,department,hire_date,performance_score,email) values
 (101, 'Gowri',  'Priya',   75000, 'IT',      '2026-10-12', 5, 'gowripriya@gmail.com'),
 (102, 'Rahul',  'Kumar',   68000, 'HR',      '2026-09-15', 4, 'rahulkumar@gmail.com'),
 (103, 'Anjali', 'Sharma',  82000, 'Finance', '2026-08-20', 5, 'anjalisharma@gmail.com'),
 (104, 'Vikram', 'Reddy',   60000, 'Sales',   '2026-07-10', 3, 'vikramreddy@gmail.com'),
-(105, 'Sneha',  'Patel',   72000, 'IT',      '2026-06-25', 4, 'snehapatel@gmail.com');
+(105, 'Sneha',  'Patel',   72000, 'IT',      '2026-06-25', 4, 'snehapatel@gmail.com'),
 (106, 'Sam',    'Reddy',   90000, 'HR',       '2023-01-01', 3,'samreddy@gmail.com');
 
+#SQL PRACTICE QUERIES
 #1. Basic Filtering: Write a query to retrieve all columns for employees whose salary is greater than $75,000?
     select * from employee where salary>75000;
 
