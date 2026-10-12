@@ -1,14 +1,10 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel,Field
+from uuid import UUID, uuid4
 
-
-class Customers(SQLModel, table=True):
-    cus_id: int = Field(primary_key=True)
-    f_name: str
-    country: str
+class Students(SQLModel, table=True):
+    __tablename__ = "students"
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    name: str
     age: int
-
-
-#db.py-configuration
-#models.py-tables configuration
-#irepo.py-abstractmethod 
-#repo.py-structure/source
+    marks: int
+    class_school: int

@@ -1,6 +1,10 @@
+#It has all configurations
 from sqlmodel import create_engine
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
-postgres_url = "postgresql://postgres:Admin123@localhost:5435/my_costume_database"
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-engine = create_engine(postgres_url, echo=True)
+engine = create_engine(DATABASE_URL, echo=True)

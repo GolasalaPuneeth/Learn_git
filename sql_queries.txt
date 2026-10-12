@@ -1,0 +1,49 @@
+create table employee(
+	employee_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(50),
+	last_name VARCHAR(50),
+	department VARCHAR(50),
+	salary DECIMAL (10,2),
+	hire_date DATE,
+	performance_score int,
+	email VARCHAR(50)
+);
+
+insert into employee(employee_id,first_name,last_name,salary,department,hire_date,performance_score,email) values
+(101, 'Gowri',  'Priya',   75000, 'IT',      '2026-10-12', 5, 'gowripriya@gmail.com'),
+(102, 'Rahul',  'Kumar',   68000, 'HR',      '2026-09-15', 4, 'rahulkumar@gmail.com'),
+(103, 'Anjali', 'Sharma',  82000, 'Finance', '2026-08-20', 5, 'anjalisharma@gmail.com'),
+(104, 'Vikram', 'Reddy',   60000, 'Sales',   '2026-07-10', 3, 'vikramreddy@gmail.com'),
+(105, 'Sneha',  'Patel',   72000, 'IT',      '2026-06-25', 4, 'snehapatel@gmail.com');
+(106, 'Sam',    'Reddy',   90000, 'HR',       '2023-01-01', 3,'samreddy@gmail.com');
+
+#1. Basic Filtering: Write a query to retrieve all columns for employees whose salary is greater than $75,000?
+    select * from employee where salary>75000;
+
+#2. Pattern Matching: Find the first name, last name, and department of all employees whose first name starts with the letter 'A'? 
+    select first_name,last_name,department from employee where first_name LIKE 'A%';
+
+#3. Range Filtering: List all employees who were hired between '2023-01-01' and '2023-12-31'?
+    select * from employee where hire_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+#4. Multiple Conditions: Find the names and salaries of employees who work in the 'IT' department and earn more than $80,000?
+    select first_name,last_name,salary from employee where department='IT' AND salary>80000;
+
+#5. Handling Nulls: Write a query to find all employees whose email address is missing (NULL)?
+    select * from employee where email is null;
+
+#6. Grouping: Calculate the average salary for each department?
+    select department,avg(salary) as avg_salary from employee group by department;
+
+#7. Filtering Groups: Find all departments that have a total employee count greater than 5?
+    select department, count(*) as employee_count from employee group by department having count(*)>5;
+
+#8. Conditional Logic: Create a query listing each employee's name and salary, alongside a new column salary_tier:'HIGH' if salary > $90,000,'Medium' if between $60,000 and $90,000,'Low' otherwise.
+    select first_name,last_name,salary,case when salary>90000 then 'High' when salary between 60000 and 90000 then 'Medium' else 'Low' end as salary_tier from employee;
+
+#9. String Formatting: Write a query combining first_name and last_name into a single column named full_name (separated by a space).
+    select concat(first_name,' ',last_name) as full_name from employee;
+
+#10. Top-N Sorting: Write a query to find the top 3 highest-paid employees in the company.
+    select first_name,last_name,salary from employee order by salary desc limit 3;
+
