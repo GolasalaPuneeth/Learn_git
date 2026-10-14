@@ -1,108 +1,98 @@
 from flask import Flask, request, jsonify
-from sqlmodel import Session
-from uuid import UUID
+from models import Employee
+from repo import EmployeeRepository 
 
-from db import engine
-from models import Students
-from repo import StudentRepository
 
 
 app = Flask(__name__)
+repo=EmployeeRepository()
 
-
-@app.route("/students", methods=["POST"])
+@app.post("/employee")
 def create():
     data = request.json
 
-    student = Students(
-        name=data["name"],
-        age=data["age"],
-        marks=data["marks"],
-        class_school=data["class_school"]
+    employee = Employee(
+        first_name = data["first_name"],
+        last_name = data["last_name"],
+        department = data["department"],
+        salary = data["salary"],
+        hire_date = data["hire_date"],
+        performance_score = data["performance_score"],
+        email = data["email"]
     )
+    employee = repo.create_employee(employee)
 
-    with Session(engine) as session:
-        repo = StudentRepository(session)
-        student = repo.create_student(student)
+    return jsonify({
+        "employee_id": employee.employee_id,
+        "first_name": employee.first_name,
+        "last_name": employee.last_name,
+        "department": employee.department,
+        "salary": employee.salary,
+        "hire_date": employee.hire_date,
+        "performance_score": employee.performance_score,
+        "email": employee.email
+    })
 
-        return jsonify({
-            "id": str(student.id),
-            "name": student.name,
-            "age": student.age,
-            "marks": student.marks,
-            "class_school": student.class_school
-        })
 
-
-@app.route("/students", methods=["GET"])
+@app.get("/employees")
 def get_all():
-    with Session(engine) as session:
-        repo = StudentRepository(session)
-        students = repo.get_students()
-
-        result = []
-
-        for student in students:
-            result.append({
-                "id": str(student.id),
-                "name": student.name,
-                "age": student.age,
-                "marks": student.marks,
-                "class_school": student.class_school
-            })
-
-        return jsonify(result)
+    employees = repo.get_all_employee()
+    result = []
+    for employee in employees:
+        result.append({
+        "employee_id": employee.employee_id,
+        "first_name": employee.first_name,
+        "last_name": employee.last_name,
+        "department": employee.department,
+        "salary": employee.salary,
+        "hire_date": employee.hire_date,
+        "performance_score": employee.performance_score,
+        "email": employee.email
+    })
+    return jsonify(result)
 
 
-@app.route("/students/<id>", methods=["GET"])
-def get_one(id):
-    with Session(engine) as session:
-        repo = StudentRepository(session)
-        student = repo.get_student(UUID(id))
+@app.get("/employees/<int:employee_id>")
+def get_one(employee_id):
+    employee = repo.get_employee(employee_id)
+    if employee:
+        return jsonify({
+            "first_name": employee.first_name,
+            "last_name": employee.last_name,
+            "department": employee.department,
+            "salary": employee.salary,
+            "hire_date": employee.hire_date,
+            "performance_score": employee.performance_score,
+            "email": employee.email
+        })
+    return jsonify({"message": "employee not found"}), 404
 
-        if student:
-            return jsonify({
-                "name": student.name,
-                "age": student.age,
-                "marks": student.marks,
-                "class_school": student.class_school
-            })
 
-        return jsonify({"message": "Student not found"}), 404
-
-
-@app.route("/students/<id>", methods=["PUT"])
-def update(id):
+@app.put("/employees/<int:employee_id>")
+def update(employee_id):
     data = request.json
-
-    with Session(engine) as session:
-        repo = StudentRepository(session)
-
-        student = repo.update_student(UUID(id), data)
-
-        if student:
-            return jsonify({
-                "id": str(student.id),
-                "name": student.name,
-                "age": student.age,
-                "marks": student.marks,
-                "class_school": student.class_school
-            })
-
-        return jsonify({"message": "Student not found"}), 404
+    employee = repo.update_employee(employee_id, data)
+    if employee:
+        return jsonify({
+            "employee_id": employee.employee_id,
+            "first_name": employee.first_name,
+            "last_name": employee.last_name,
+            "department": employee.department,
+            "salary": employee.salary,
+            "hire_date": employee.hire_date,
+            "performance_score": employee.performance_score,
+            "email": employee.email
+        })
+    return jsonify({"message": "employee not found"}), 404
 
 
-@app.route("/students/<id>", methods=["DELETE"])
-def delete(id):
-    with Session(engine) as session:
-        repo = StudentRepository(session)
+@app.delete("/employees/<int:employee_id>")
+def delete(employee_id):
+    result = repo.delete_employee(employee_id)
+    if result:
+        return jsonify({"message": "employee deleted"})
+    return jsonify({"message": "employee not found"}), 404
+    
 
-        result = repo.delete_student(UUID(id))
-
-        if result:
-            return jsonify({"message": "Student deleted"})
-
-        return jsonify({"message": "Student not found"}), 404
-
-
-app.run(host='0.0.0.0',port=8001,debug=True)
+if __name__=='__main__':
+    app.run(host='0.0.0.0',port=8001,debug=True)

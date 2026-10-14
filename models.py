@@ -1,10 +1,14 @@
 from sqlmodel import SQLModel,Field
-from uuid import UUID, uuid4
+from datetime import date
 
-class Students(SQLModel, table=True):
-    __tablename__ = "students"
-    id: UUID = Field(default_factory=uuid4, primary_key=True)
-    name: str
-    age: int
-    marks: int
-    class_school: int
+
+class Employee(SQLModel, table=True):
+    __tablename__ = "employee"
+    employee_id: int | None=Field(default=None,primary_key=True)
+    first_name: str
+    last_name: str
+    department: str
+    salary: float
+    hire_date : date
+    performance_score : int
+    email : str
